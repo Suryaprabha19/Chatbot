@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Interface</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/icon.jpg') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-image: url('static/images/b1.jpg');
+            font-family: Arial, sans-serif;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <div class="sidebar">
+        <h1>Menu</h1>
+        <ul>
+            <li><a href="{{ url_for('sales') }}">Sales</a></li>
+            <li><a href="{{ url_for('charts') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('map') }}">Map</a></li>
+        </ul>
+    </div>
+          
+    <div class="chat-container">
+        <h1>Chatbot</h1>
+        <div class="messages" id="messages"></div>
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Type your message here" onkeydown="handleKeyPress(event)">
+            <button onclick="sendMessage()">Send</button>
+            <button class="voice-button" onclick="startRecognition()">🎤</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

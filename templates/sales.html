@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Prediction</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/icon.jpg') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('static/images/image.jpeg'); /* Update with your image path */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+        .container {
+            width: 40%; /* Set container width to 40% */
+            margin: auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.3); /* Increased transparency for better visibility */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adjusted shadow for better contrast */
+            text-align: center; /* Center-align text */
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 1.6em; /* Adjusted font size */
+            color: #007bff; /* Changed heading color for better visibility */
+        }
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column; /* Stack label and input vertically */
+            align-items: center;
+            text-align: left; /* Align label text to the left */
+        }
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333; /* Changed label color to dark for readability */
+        }
+        .form-group input,
+        .form-group select {
+            width: 60%; /* Set width of input boxes to be smaller */
+            padding: 5px; /* Adjusted padding */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .form-group input[type="submit"] {
+            width: auto; /* Adjusted width for submit button */
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 10px; /* Margin above submit button */
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333; /* Changed result text color to dark for readability */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sales Prediction</h1>
+        <form id="predictForm">
+            <div class="form-group">
+                <label for="quantity_sold">Quantity Sold</label>
+                <input type="number" id="quantity_sold" name="quantity_sold" required>
+            </div>
+            <div class="form-group">
+                <label for="discount">Discount</label>
+                <input type="number" step="0.01" id="discount" name="discount" required>
+            </div>
+            <div class="form-group">
+                <label for="profit">Profit</label>
+                <input type="number" step="0.01" id="profit" name="profit" required>
+            </div>
+            <div class="form-group">
+                <label for="launch_month">Launch Month</label>
+                <select id="launch_month" name="launch_month" required>
+                    <option value="">Select Month</option>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="rating">Rating</label>
+                <input type="number" step="0.1" id="rating" name="rating" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Predict Sales">
+            </div>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+    <script>
+        document.getElementById('predictForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById('result').innerText = `Predicted Sales Amount: $${result.prediction.toFixed(2)}`;
+            })
+            .catch(error => {
+                document.getElementById('result').innerText = `Error: ${error.message}`;
+            });
+        });
+    </script>
+</body>
+</html>
